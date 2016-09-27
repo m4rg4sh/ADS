@@ -43,4 +43,34 @@ class ArraySearch {
         }
         return indexOfKey;
     }
+
+    public static void main(String[] args) {
+        int length = 20000000;
+        int item = 19999999;
+
+        int[] testarray = createPositiveNumArray(length);
+
+        long startTime = 0;
+        long endTime = 0;
+
+        System.out.println("Testing squential search with " + length + " items. key is at position " + item + ":");
+        startTime = System.currentTimeMillis();
+        sequentialSearch(testarray,item);
+        endTime = System.currentTimeMillis();
+        System.out.println("That took " + (endTime - startTime) + " milliseconds");
+
+        System.out.println("Doing same thing with binary search algorithm:");
+        startTime = System.currentTimeMillis();
+        binarySearch(testarray,item);
+        endTime = System.currentTimeMillis();
+        System.out.println("That took " + (endTime - startTime) + " milliseconds");
+    }
+
+    private static int[] createPositiveNumArray(int length) {
+        int[] result = new int[length];
+        for (int i = 0; i < length; i++) {
+            result[i] = i;
+        }
+        return result;
+    }
 }
