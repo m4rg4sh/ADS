@@ -1,4 +1,4 @@
-package P01_Stack;
+package P01_Brackets;
 
 import java.util.ArrayList;
 
@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * Implementation of a stack based on ArrayLists
  * @author Stefan Epprecht <epprest1@students.zhaw.ch>
  */
-public class Stack extends ArrayList{
+public class Stack<Object> extends ArrayList<Object>{
 
     public void push(Object value) {
         add(value);
