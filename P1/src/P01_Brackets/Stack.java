@@ -6,19 +6,31 @@ import java.util.ArrayList;
  * Implementation of a stack based on ArrayLists
  * @author Stefan Epprecht <epprest1@students.zhaw.ch>
  */
-public class Stack<Object> extends ArrayList<Object>{
+class Stack<Object> extends ArrayList<Object>{
 
-    public void push(Object value) {
-        add(value);
+    /**
+     * Pushed a Object onto the stack
+     * @param item The item to be pushed onto the stack
+     */
+    void push(Object item) {
+        add(item);
     }
 
-    public Object pop() {
+    /**
+     * Removes and returns the object currently on top of the stack
+     * @return the object on top of the stack
+     */
+    Object pop() {
         Object returnObject = top();
         remove(size()-1);
         return returnObject;
     }
 
-    public Object top() {
+    /**
+     * Returnes the object on top of the stack but leaves it in place
+     * @return the object on top of the stack
+     */
+    Object top() {
         trimToSize();
         return get(size()-1);
     }
