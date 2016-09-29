@@ -1,7 +1,10 @@
 package P02_ArraySearch;
 
 /**
- * Created by margash on 29/09/16.
+ * Implementation of the binary search algorithm: iterative and recursive
+ * @author Stefan Epprecht <epprest1@students.zhaw.ch>
+ * @author Lawrence Markwalder <markwlaw@students.zhaw.ch>
+ * @author Luca Egli <eglilu01@students.zhaw.ch>
  */
 public class ArraySearch {
     static final int KEY_NOT_FOUND = -1;
@@ -11,6 +14,13 @@ public class ArraySearch {
         System.out.println(binarySearchRecursive(values,3));
     }
 
+    /**
+     * recursive binary search algorithm
+     *
+     * @param values values to search through, must be sorted ascending
+     * @param key    value to find
+     * @return index of the value in the array, or KEY_NOT_FOUND
+     */
     static int binarySearchRecursive(int[] values, int key) {
         if (values.length == 0) {
             return KEY_NOT_FOUND;
@@ -19,6 +29,14 @@ public class ArraySearch {
         }
     }
 
+    /**
+     * recursive binary search algorithm
+     * @param values values to search through, must be sorted ascending
+     * @param key value to find
+     * @param minIndex algorithm won't search in indexes lower than this
+     * @param maxIndex algorithm won't search in indexes higher than this
+     * @return index of the value in the array, or KEY_NOT_FOUND
+     */
     static int binarySearchRecursive(int[] values, int key, int minIndex, int maxIndex) {
 
         int indexToCheck = minIndex + ((maxIndex - minIndex) / 2);
@@ -38,6 +56,12 @@ public class ArraySearch {
         return indexOfKey;
     }
 
+    /**
+     * iterative implementation of the binary search algorithm
+     * @param values values to search through, must be sorted ascending
+     * @param key value to find
+     * @return index of the value in the array, or KEY_NOT_FOUND
+     */
     static int binarySearchIterative(int[] values, int key){
         int indexOfKey = KEY_NOT_FOUND;
         int minIndex = 0;
@@ -56,6 +80,4 @@ public class ArraySearch {
         }
         return indexOfKey;
     }
-
-
 }

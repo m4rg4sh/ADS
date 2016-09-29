@@ -3,6 +3,8 @@ package P01_Brackets;
 /**
  * This class implements a Bracket Tester for the ADS module @ ZHAW
  * @author Stefan Epprecht <epprest1@students.zhaw.ch>
+ * @author Lawrence Markwalder <markwlaw@students.zhaw.ch>
+ * @author Luca Egli <eglilu01@students.zhaw.ch>
  */
 class BracketTester {
 

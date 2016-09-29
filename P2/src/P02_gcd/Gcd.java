@@ -1,11 +1,10 @@
 package P02_gcd;
 
 /**
- * This class implements the gcd (german: ggT)
- *
+ * This class implements the calculation of the gcd (german: ggT)
  * @author Stefan Epprecht <epprest1@students.zhaw.ch>
- * @author Lawrence Markwalder
- * @author Luca Egli
+ * @author Lawrence Markwalder <markwlaw@students.zhaw.ch>
+ * @author Luca Egli <eglilu01@students.zhaw.ch>
  */
 public class Gcd {
 

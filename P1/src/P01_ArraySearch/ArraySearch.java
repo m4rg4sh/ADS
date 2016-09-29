@@ -1,5 +1,13 @@
 package P01_ArraySearch;
 
+/**
+ * This class implements two search algorithms (sequential and binary) for the ADS module @ ZHAW
+ *
+ * @author Stefan Epprecht <epprest1@students.zhaw.ch>
+ * @author Lawrence Markwalder <markwlaw@students.zhaw.ch>
+ * @author Luca Egli <eglilu01@students.zhaw.ch>
+ */
+
 class ArraySearch {
     static final int KEY_NOT_FOUND = -1;
 
