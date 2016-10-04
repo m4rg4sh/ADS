@@ -10,11 +10,18 @@ public class Gcd {
 
     /**
      * calculates the gcd
-     * @param a Number A
-     * @param b Number B
-     * @return
+     * @param n Number n
+     * @param m Number m
+     * @return the gcd
      */
-    public static long gcd(long a, long b){
+    public static long gcd(long n, long m) {
+        if (m == 0) {
+            return n;
+        } else {
+            return gcd(m, n % m);
+        }
+    }
+    /*public static long gcd(long a, long b){
         if(a == 0) {
             return b;
         } else if(b == 0) {
@@ -24,7 +31,7 @@ public class Gcd {
         } else {
             return gcd(a,b-a);
         }
-    }
+    }*/
 
     public static void main(String[] args){
         long a = 33;
