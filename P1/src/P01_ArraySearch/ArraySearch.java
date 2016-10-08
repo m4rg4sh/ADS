@@ -8,7 +8,7 @@ package P01_ArraySearch;
  * @author Luca Egli <eglilu01@students.zhaw.ch>
  */
 
-class ArraySearch {
+public class ArraySearch {
     static final int KEY_NOT_FOUND = -1;
 
     /**
@@ -33,7 +33,7 @@ class ArraySearch {
      * @param key the key to find
      * @return the index of the key or the KEY_NOT_FOUND value if the key wasn't found
      */
-    static int binarySearch(int[] values, int key) {
+    public static int binarySearch(int[] values, int key) {
         int indexOfKey = KEY_NOT_FOUND;
         int minIndex = 0;
         int maxIndex = values.length - 1;

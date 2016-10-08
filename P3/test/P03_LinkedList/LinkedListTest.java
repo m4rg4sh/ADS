@@ -63,8 +63,8 @@ public class LinkedListTest {
     @Test
     public void shouldGetCorrectValueAtIndex() {
         MyLinkedList listFrom1To9 = createSortedFrom1To9();
-        for (int index = 0; index < 10; index++)
-            assertEquals(index, listFrom1To9.get(index));
+        for (int index = 0; index < 9; index++)
+            assertEquals(index + 1, listFrom1To9.get(index));
     }
 
     @Test

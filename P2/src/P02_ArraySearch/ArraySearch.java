@@ -1,5 +1,6 @@
 package P02_ArraySearch;
 
+
 /**
  * Implementation of the binary search algorithm: iterative and recursive
  * @author Stefan Epprecht <epprest1@students.zhaw.ch>
@@ -38,7 +39,6 @@ public class ArraySearch {
      * @return index of the value in the array, or KEY_NOT_FOUND
      */
     static int binarySearchRecursive(int[] values, int key, int minIndex, int maxIndex) {
-
         int indexToCheck = minIndex + ((maxIndex - minIndex) / 2);
         int indexOfKey = KEY_NOT_FOUND;
 
@@ -63,21 +63,6 @@ public class ArraySearch {
      * @return index of the value in the array, or KEY_NOT_FOUND
      */
     static int binarySearchIterative(int[] values, int key){
-        int indexOfKey = KEY_NOT_FOUND;
-        int minIndex = 0;
-        int maxIndex = values.length - 1;
-        int indexToCheck = 0;
-
-        while (indexOfKey == KEY_NOT_FOUND && (maxIndex >= minIndex)) {
-            indexToCheck = minIndex + ((maxIndex - minIndex) / 2);
-            if (values[indexToCheck] == key) {
-                indexOfKey = indexToCheck;
-            } else if (key > values[indexToCheck]) {
-                minIndex = indexToCheck + 1;
-            } else if (key < values[indexToCheck]) {
-                maxIndex = indexToCheck - 1;
-            }
-        }
-        return indexOfKey;
+        return P01_ArraySearch.ArraySearch.binarySearch(values, key);
     }
 }
