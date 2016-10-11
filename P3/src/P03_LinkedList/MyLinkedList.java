@@ -9,9 +9,11 @@ package P03_LinkedList;
  */
 class MyLinkedList<Type> {
     protected Node<Type> head;
+    private int size;
 
     MyLinkedList() {
         head = new Node<>();
+        size = 0;
     }
 
     /**
@@ -25,13 +27,13 @@ class MyLinkedList<Type> {
      * @return the amount of values in the list
      */
     int size() {
-        int counter = 0;
+        /*int counter = 0;
         Node<Type> currentNode = head;
         while (currentNode.getNext() != null) {
             counter++;
             currentNode = currentNode.getNext();
-        }
-        return counter;
+        }*/
+        return size;
     }
 
     /**
@@ -91,6 +93,7 @@ class MyLinkedList<Type> {
         }
         Node<Type> nextNode = currentNode.getNext();
         currentNode.setNext(new Node<>(value, nextNode));
+        size++;
     }
 
     /**
@@ -130,6 +133,7 @@ class MyLinkedList<Type> {
             nodeToRemove = nodeToRemove.getNext();
         }
         previousNode.setNext(nodeToRemove.getNext());
+        size--;
         return nodeToRemove.getValue();
 
     }
