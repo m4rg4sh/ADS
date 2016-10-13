@@ -10,7 +10,7 @@ import P03_LinkedList.Node;
  * @author Lawrence Markwalder <markwlaw@students.zhaw.ch>
  * @author Luca Egli <eglilu01@students.zhaw.ch>
  */
-class Queue<Type> {
+public class Queue<Type> {
     private Node<Type> head;
 
     public Queue() {
@@ -20,7 +20,7 @@ class Queue<Type> {
     /**
      * @return true if the queue is empty
      */
-    boolean isEmpty() {
+    public boolean isEmpty() {
         return (head.getNext() == null);
     }
 
@@ -28,15 +28,11 @@ class Queue<Type> {
      * @return the first value in the queue
      * @throws ListEmptyException If the queue is empty
      */
-    Type peek() throws ListEmptyException {
+    public Type peek() throws ListEmptyException {
         if (isEmpty()) {
             throw new ListEmptyException();
         }
-        Node<Type> currentNode = head;
-        while (currentNode.getNext() != null) {
-            currentNode = currentNode.getNext();
-        }
-        return currentNode.getValue();
+        return head.getNext().getValue();
     }
 
     /**
@@ -44,7 +40,7 @@ class Queue<Type> {
      *
      * @param value the element to add
      */
-    void add(Type value) {
+    public void add(Type value) {
         Node<Type> currentNode = head;
         while (currentNode.getNext() != null) {
             currentNode = currentNode.getNext();
@@ -58,7 +54,7 @@ class Queue<Type> {
      * @return the first element in the queue
      * @throws ListEmptyException if the queue is empty
      */
-    Type remove() throws ListEmptyException {
+    public Type remove() throws ListEmptyException {
         Type value = peek();
         head.setNext(head.getNext().getNext());
         return value;
