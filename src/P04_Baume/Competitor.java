@@ -49,13 +49,13 @@ public final class Competitor implements Comparable<Competitor> {
 
     @Override
     public int hashCode() {
-        return toString().hashCode();
+        return (firstName + lastName).hashCode();
     }
 
     @Override
     public String toString() {
 
-        return new String("#" + number + ": " + firstName + " " + lastName + " (" + yearOfBirth + ") from "
+        return ("#" + number + ": " + firstName + " " + lastName + " (" + yearOfBirth + ") from "
                 + city + ", Time: " + TIME_FORMAT.format(time));
     }
 
