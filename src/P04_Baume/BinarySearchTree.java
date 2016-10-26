@@ -11,11 +11,11 @@ import P03_Queue.Queue;
  * @author Luca Egli <eglilu01@students.zhaw.ch>
  */
 public class BinarySearchTree<E extends Comparable<E>> extends BinaryTree<E> {
-    BinarySearchTree(E value) {
+    public BinarySearchTree(E value) {
         super(value);
     }
 
-    BinarySearchTree() {
+    public BinarySearchTree() {
         super();
     }
 
@@ -24,7 +24,7 @@ public class BinarySearchTree<E extends Comparable<E>> extends BinaryTree<E> {
      *
      * @param value the value which will be added
      */
-    void add(E value) {
+    public void add(E value) {
         TreeNode<E> currentNode = getRoot();
 
         if (currentNode == null) {
@@ -62,7 +62,7 @@ public class BinarySearchTree<E extends Comparable<E>> extends BinaryTree<E> {
      * @param value the value to search for
      * @return the node which contains the value or null if no node is found
      */
-    TreeNode<E> find(E value) {
+    public TreeNode<E> find(E value) {
         TreeNode<E> foundNode = null;
         P03_Queue.Queue<TreeNode<E>> queue = new Queue();
 
@@ -89,5 +89,53 @@ public class BinarySearchTree<E extends Comparable<E>> extends BinaryTree<E> {
             }
         }
         return foundNode;
+    }
+
+    /**
+     * Removes an element from the tree
+     * @param element the element to remove
+     */
+    public void remove(E element){
+        TreeNode<E> deletionNode;
+        deletionNode = find(element);
+        if (deletionNode.getRight() == null){
+            if (deletionNode == getRoot()) setRoot(getRoot().getLeft());
+            else {
+                TreeNode<E> parentNode = getRoot();
+                TreeNode<E> nextNode = (deletionNode.getElement().compareTo(parentNode.getElement())<0)? parentNode.getLeft() : parentNode.getRight();
+                while(nextNode != deletionNode){
+                    parentNode = nextNode;
+                    nextNode = (deletionNode.getElement().compareTo(parentNode.getElement())<0)? nextNode.getLeft() : nextNode.getRight();
+                }
+                if (parentNode.getRight() == deletionNode) parentNode.setRight(deletionNode.getLeft());
+                else parentNode.setLeft(deletionNode.getLeft());
+            }
+        }
+        else {
+            if (deletionNode == getRoot()) setRoot(getRoot().getRight());
+            else {
+                TreeNode<E> parentNode = getParentNode(deletionNode);
+                TreeNode<E> switchNode = parentNode.getLeft();
+                deletionNode.setElement(switchNode.getElement());
+                if (parentNode.getRight() == switchNode) parentNode.setRight(switchNode.getRight());
+                else parentNode.setLeft(switchNode.getRight());
+            }
+        }
+    }
+
+    /**
+     * Returns the parent node of a specified node
+     * @param node the node
+     * @return the parent of the node
+     */
+    private TreeNode<E> getParentNode(TreeNode<E> node){
+        TreeNode<E> parentNode = node;
+        TreeNode<E> switchNode = node.getRight();
+        if (switchNode == null) throw new IndexOutOfBoundsException();
+        while (switchNode.getLeft() != null){
+            parentNode = switchNode;
+            switchNode = switchNode.getLeft();
+        }
+        return parentNode;
     }
 }
