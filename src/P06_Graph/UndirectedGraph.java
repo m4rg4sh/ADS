@@ -34,7 +34,7 @@ interface UndirectedGraph {
     /**
      * Returns a list of edges that are connected to the given vertice.
      * If the graph is weighted the weight of each edge is also included.
-     * @param vertex the vertice to check for edges
+     * @param vertex the vertex to check for edges
      * @return list of edges connected to the vertice.
      */
     List getListOfEdges(int vertex) throws VertexNotFoundException;

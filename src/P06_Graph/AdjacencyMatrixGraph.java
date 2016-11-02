@@ -19,15 +19,17 @@ public class AdjacencyMatrixGraph implements UndirectedGraph {
      */
     public AdjacencyMatrixGraph(String filePath, boolean isWeighted) {
         this.isWeighted = isWeighted;
-        importFromFile(filePath);
+        matrix = new int[0][0];
+        if(filePath != null && !filePath.equals("")) {
+            importFromFile(filePath);
+        }
     }
 
     /**
      * creates an empty graph.
      */
     public AdjacencyMatrixGraph() {
-        matrix = new int[0][0];
-        isWeighted = false;
+        this("",false);
     }
 
     /**
@@ -40,8 +42,6 @@ public class AdjacencyMatrixGraph implements UndirectedGraph {
         ArrayList<Integer> values = CSVReader.readFile(filepath);
         if (values.size() > 0) {
             matrix = new int[values.get(0)][values.get(0)];
-        } else {
-          matrix = new int[0][0];
         }
 
         for (int i = 2;i < values.size();i++){
