@@ -93,29 +93,30 @@ public class AdjacencyMatrixGraph implements UndirectedGraph {
 
     /**
      * @param vertex the vertex to check for edges
-     * @return a list of vertices that are connected to the given vertex.
+     * @return either a list of vertices that are connected to the given vertex. or a list of arrays including
+     * the vertices and the weight of the corresponding edge
      */
     @Override
-    public List<Integer[]> getListOfEdges(int vertex) throws VertexNotFoundException{
+    public List getListOfEdges(int vertex) throws VertexNotFoundException{
         if (vertex >= matrix.length) {
             throw new VertexNotFoundException();
         }
-
-        List<Integer[]> list = new ArrayList<>();
-        int column = 0;
-        for (int i : matrix[vertex]){
-            if (i != 0) {
-                Integer[] tupel;
+        List list;
+        if(isWeighted) {
+            list = new ArrayList<Integer[]>();
+        } else {
+            list = new ArrayList<Integer>();
+        }
+        int targetVertex = 0;
+        for (int weight : matrix[vertex]){
+            if (weight != 0) {
                 if (isWeighted) {
-                    tupel = new Integer[2];
-                    tupel[1] = i;
+                    list.add(new Integer[] {targetVertex, weight});
                 } else {
-                    tupel = new Integer[1];
+                    list.add(new Integer(targetVertex));
                 }
-                tupel[0] = column;
-                list.add(tupel);
             }
-            column++;
+            targetVertex++;
         }
         return list;
     }

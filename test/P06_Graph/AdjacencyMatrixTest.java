@@ -58,11 +58,8 @@ public class AdjacencyMatrixTest {
 
     @Test
     public void listOfUnweightedEdgesForOneItem()throws VertexNotFoundException{
-        ArrayList<Integer[]> expectedResult = new ArrayList();
-        expectedResult.add(new Integer[] {1});
-
         UndirectedGraph graph = new AdjacencyMatrixGraph("P06_Graph/unweightedGraph.csv",false);
-        assertEquals(expectedResult.get(0)[0],graph.getListOfEdges(0).get(0)[0]);
+        assertEquals(1,graph.getListOfEdges(0).get(0));
     }
 
     @Test
@@ -90,13 +87,13 @@ public class AdjacencyMatrixTest {
 
     @Test
     public void listOfUnweightedEdgesForManyItems()throws VertexNotFoundException{
-        ArrayList<Integer[]> expectedResult = new ArrayList();
-        expectedResult.add(new Integer[] {1});
-        expectedResult.add(new Integer[] {2});
+        ArrayList<Integer> expectedResult = new ArrayList();
+        expectedResult.add(new Integer(1));
+        expectedResult.add(new Integer(2));
 
         UndirectedGraph graph = new AdjacencyMatrixGraph("P06_Graph/unweightedGraph.csv",false);
-        assertEquals(expectedResult.get(0)[0],graph.getListOfEdges(0).get(0)[0]);
-        assertEquals(expectedResult.get(1)[0],graph.getListOfEdges(0).get(1)[0]);
+        assertEquals(expectedResult.get(0),graph.getListOfEdges(0).get(0));
+        assertEquals(expectedResult.get(1),graph.getListOfEdges(0).get(1));
     }
 
     @Test
@@ -129,7 +126,9 @@ public class AdjacencyMatrixTest {
         expectedResult.add(new Integer[] {2});
 
         UndirectedGraph graph = new AdjacencyMatrixGraph("P06_Graph/weightedGraph.csv",true);
-        assertEquals(expectedResult.get(0)[0],graph.getListOfEdges(0).get(0)[0]);
-        assertEquals(expectedResult.get(1)[0],graph.getListOfEdges(0).get(1)[0]);
+        assertEquals(new Integer(1),((Integer[]) graph.getListOfEdges(0).get(0))[0]);
+        assertEquals(new Integer(5),((Integer[]) graph.getListOfEdges(0).get(0))[1]);
+        assertEquals(new Integer(2),((Integer[]) graph.getListOfEdges(0).get(1))[0]);
+        assertEquals(new Integer(10),((Integer[]) graph.getListOfEdges(0).get(1))[1]);
     }
 }

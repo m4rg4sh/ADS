@@ -29,7 +29,7 @@ interface UndirectedGraph {
     /**
      * @return Returns a list of all the vertices in the graph.
      */
-    List getListOfVertices();
+    List<Integer> getListOfVertices();
 
     /**
      * Returns a list of edges that are connected to the given vertice.
@@ -37,5 +37,5 @@ interface UndirectedGraph {
      * @param vertex the vertice to check for edges
      * @return list of edges connected to the vertice.
      */
-    List<Integer[]> getListOfEdges(int vertex) throws VertexNotFoundException;
+    List getListOfEdges(int vertex) throws VertexNotFoundException;
 }
