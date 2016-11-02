@@ -37,7 +37,7 @@ public class AdjacencyListTest {
 
     @Test
     public void numberOfUnweightedVerticesForOneItem(){
-        UndirectedGraph graph = new AdjacencyListGraph("P06_Graph/singleVertex.csv", false);
+        UndirectedGraph graph = new AdjacencyListGraph("P06_Graph/singleVertex.csv");
         assertEquals(1,graph.getNumberOfVertices());
     }
 
@@ -45,25 +45,25 @@ public class AdjacencyListTest {
     public void listOfUnweightedVerticesForOneItem(){
         ArrayList<Integer> expectedResult = new ArrayList();
         expectedResult.add(0);
-        UndirectedGraph graph = new AdjacencyListGraph("P06_Graph/singleVertex.csv", false);
+        UndirectedGraph graph = new AdjacencyListGraph("P06_Graph/singleVertex.csv");
         assertEquals(expectedResult,graph.getListOfVertices());
     }
 
     @Test
     public void numberOfUnweightedEdgesForOneItem(){
-        UndirectedGraph graph = new AdjacencyListGraph("P06_Graph/singleVertex.csv", false);
+        UndirectedGraph graph = new AdjacencyListGraph("P06_Graph/singleVertex.csv");
         assertEquals(0,graph.getNumberOfEdges());
     }
 
     @Test
     public void listOfUnweightedEdgesForOneItem()throws VertexNotFoundException{
-        UndirectedGraph graph = new AdjacencyListGraph("P06_Graph/unweightedGraph.csv",false);
-        assertEquals(1,graph.getListOfEdges(0).get(0));
+        UndirectedGraph graph = new AdjacencyListGraph("P06_Graph/unweightedGraph.csv");
+        assertEquals(1,graph.getListOfEdges(0).get(0)[0]);
     }
 
     @Test
     public void numberOfUnweightedVerticesForManyItems(){
-        UndirectedGraph graph = new AdjacencyListGraph("P06_Graph/unweightedGraph.csv",false);
+        UndirectedGraph graph = new AdjacencyListGraph("P06_Graph/unweightedGraph.csv");
         assertEquals(3,graph.getNumberOfVertices());
     }
 
@@ -74,13 +74,13 @@ public class AdjacencyListTest {
         expectedResult.add(1);
         expectedResult.add(2);
 
-        UndirectedGraph graph = new AdjacencyListGraph("P06_Graph/unweightedGraph.csv",false);
+        UndirectedGraph graph = new AdjacencyListGraph("P06_Graph/unweightedGraph.csv");
         assertEquals(expectedResult,graph.getListOfVertices());
     }
 
     @Test
     public void numberOfUnweightedEdgesForManyItems(){
-        UndirectedGraph graph = new AdjacencyListGraph("P06_Graph/unweightedGraph.csv",false);
+        UndirectedGraph graph = new AdjacencyListGraph("P06_Graph/unweightedGraph.csv");
         assertEquals(2,graph.getNumberOfEdges());
     }
 
@@ -90,14 +90,14 @@ public class AdjacencyListTest {
         expectedResult.add(new Integer(1));
         expectedResult.add(new Integer(2));
 
-        UndirectedGraph graph = new AdjacencyListGraph("P06_Graph/unweightedGraph.csv",false);
-        assertEquals(expectedResult.get(0),graph.getListOfEdges(0).get(0));
-        assertEquals(expectedResult.get(1),graph.getListOfEdges(0).get(1));
+        UndirectedGraph graph = new AdjacencyListGraph("P06_Graph/unweightedGraph.csv");
+        assertEquals(expectedResult.get(0),(Integer)graph.getListOfEdges(0).get(0)[0]);
+        assertEquals(expectedResult.get(1),(Integer)graph.getListOfEdges(0).get(1)[0]);
     }
 
     @Test
     public void numberOfWeightedVerticesForManyItems(){
-        UndirectedGraph graph = new AdjacencyListGraph("P06_Graph/weightedGraph.csv",true);
+        UndirectedGraph graph = new AdjacencyListGraph("P06_Graph/weightedGraph.csv");
         assertEquals(3,graph.getNumberOfVertices());
     }
 
@@ -108,13 +108,13 @@ public class AdjacencyListTest {
         expectedResult.add(1);
         expectedResult.add(2);
 
-        UndirectedGraph graph = new AdjacencyListGraph("P06_Graph/weightedGraph.csv",true);
+        UndirectedGraph graph = new AdjacencyListGraph("P06_Graph/weightedGraph.csv");
         assertEquals(expectedResult,graph.getListOfVertices());
     }
 
     @Test
     public void numberOfWeightedEdgesForManyItems(){
-        UndirectedGraph graph = new AdjacencyListGraph("P06_Graph/weightedGraph.csv",true);
+        UndirectedGraph graph = new AdjacencyListGraph("P06_Graph/weightedGraph.csv");
         assertEquals(2,graph.getNumberOfEdges());
     }
 
@@ -124,10 +124,10 @@ public class AdjacencyListTest {
         expectedResult.add(new Integer[] {1});
         expectedResult.add(new Integer[] {2});
 
-        UndirectedGraph graph = new AdjacencyListGraph("P06_Graph/weightedGraph.csv",true);
-        assertEquals(new Integer(1),((Integer[]) graph.getListOfEdges(0).get(0))[0]);
-        assertEquals(new Integer(5),((Integer[]) graph.getListOfEdges(0).get(0))[1]);
-        assertEquals(new Integer(2),((Integer[]) graph.getListOfEdges(0).get(1))[0]);
-        assertEquals(new Integer(10),((Integer[]) graph.getListOfEdges(0).get(1))[1]);
+        UndirectedGraph graph = new AdjacencyListGraph("P06_Graph/weightedGraph.csv");
+        assertEquals(1,graph.getListOfEdges(0).get(0)[0]);
+        assertEquals(5,graph.getListOfEdges(0).get(0)[1]);
+        assertEquals(2,graph.getListOfEdges(0).get(1)[0]);
+        assertEquals(10,graph.getListOfEdges(0).get(1)[1]);
     }
 }

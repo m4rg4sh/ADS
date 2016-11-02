@@ -24,9 +24,9 @@ public class CSVReader {
 
             String currentRow = reader.readLine();
             while (currentRow != null) {
-                String[] words = currentRow.split(CSVDELIMITER);
-                for (String word : words) {
-                    valueList.add(new Integer(word));
+                String[] numbers = currentRow.split(CSVDELIMITER);
+                for (String number : numbers) {
+                    valueList.add(new Integer(number));
                 }
                 currentRow = reader.readLine();
             }

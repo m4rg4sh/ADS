@@ -16,11 +16,9 @@ public class AdjacencyListGraph implements UndirectedGraph {
     /**
      * creates a graph.
      * @param filePath file to import the graph from.
-     * @param isWeighted whether the graph has weighted edges or not.
      */
-    public AdjacencyListGraph(String filePath, boolean isWeighted){
+    public AdjacencyListGraph(String filePath){
         listOfVertices = new LinkedList<>();
-        this.isWeighted = isWeighted;
         if(filePath != null && !filePath.equals("")) {
             importFromFile(filePath);
         }
@@ -30,7 +28,7 @@ public class AdjacencyListGraph implements UndirectedGraph {
      * creates an empty graph
      */
     public AdjacencyListGraph(){
-        this("",false);
+        this("");
     }
 
     /**
@@ -44,6 +42,14 @@ public class AdjacencyListGraph implements UndirectedGraph {
         for (int index = 0;index < values.get(0);index++){
             listOfVertices.add(new LinkedList<>());
         }
+        if ((values.size()-2)/3 == values.get(1)) {
+            isWeighted = true;
+        } else if ((values.size()-2)/2 == values.get(1)) {
+            isWeighted = false;
+        } else {
+            throw new RuntimeException("Wrong number of edge descriptions.");
+        }
+
         for (int i = 2;i < values.size();i++){
             if (isWeighted) {
                 listOfVertices.get(values.get(i)).add(new WeightedEdge(values.get(++i),values.get(++i)));
@@ -68,9 +74,7 @@ public class AdjacencyListGraph implements UndirectedGraph {
     public int getNumberOfEdges() {
         int counter = 0;
         for (LinkedList<P06_Graph.Edge> listOfEdges : listOfVertices) {
-            for (P06_Graph.Edge edge : listOfEdges) {
-                counter++;
-            }
+            counter += listOfEdges.size();
         }
         return counter;
     }
@@ -79,7 +83,7 @@ public class AdjacencyListGraph implements UndirectedGraph {
      * @return Returns a list of all the vertices in the graph.
      */
     @Override
-    public List<Integer> getListOfVertices() {
+    public ArrayList<Integer> getListOfVertices() {
         ArrayList<Integer> list = new ArrayList<>();
         for (int index = 0; index < listOfVertices.size(); index++) {
             list.add(index);
@@ -95,23 +99,18 @@ public class AdjacencyListGraph implements UndirectedGraph {
      * @return list of edges connected to the vertice.
      */
     @Override
-    public List getListOfEdges(int vertex) throws VertexNotFoundException {
+    public ArrayList<int[]> getListOfEdges(int vertex) throws VertexNotFoundException {
         if (vertex >= listOfVertices.size()) {
             throw new VertexNotFoundException();
         }
 
-        ArrayList list;
-        if (isWeighted) {
-            list = new ArrayList<Integer[]>();
-        } else {
-            list = new ArrayList<Integer>();
-        }
+        ArrayList<int[]> list = new ArrayList<>();
 
         for (P06_Graph.Edge edge : listOfVertices.get(vertex)) {
             if (edge instanceof WeightedEdge) {
-                list.add(new Integer[]{edge.getTarget(), ((WeightedEdge) edge).getWeight()});
+                list.add(new int[]{edge.getTarget(), ((WeightedEdge) edge).getWeight()});
             } else if (edge instanceof P06_Graph.Edge) {
-                list.add(edge.getTarget());
+                list.add(new int[] {edge.getTarget()});
             } else {
                 throw new RuntimeException("Edge type unknown");
             }

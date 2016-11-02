@@ -15,10 +15,8 @@ public class AdjacencyMatrixGraph implements UndirectedGraph {
     /**
      * creates a graph.
      * @param filePath file to import the graph from.
-     * @param isWeighted whether the graph has weighted edges or not.
      */
-    public AdjacencyMatrixGraph(String filePath, boolean isWeighted) {
-        this.isWeighted = isWeighted;
+    public AdjacencyMatrixGraph(String filePath) {
         matrix = new int[0][0];
         if(filePath != null && !filePath.equals("")) {
             importFromFile(filePath);
@@ -29,7 +27,7 @@ public class AdjacencyMatrixGraph implements UndirectedGraph {
      * creates an empty graph.
      */
     public AdjacencyMatrixGraph() {
-        this("",false);
+        this("");
     }
 
     /**
@@ -42,6 +40,14 @@ public class AdjacencyMatrixGraph implements UndirectedGraph {
         ArrayList<Integer> values = CSVReader.readFile(filepath);
         if (values.size() > 0) {
             matrix = new int[values.get(0)][values.get(0)];
+        }
+
+        if ((values.size()-2)/3 == values.get(1)) {
+            isWeighted = true;
+        } else if ((values.size()-2)/2 == values.get(1)) {
+            isWeighted = false;
+        } else {
+            throw new RuntimeException("Wrong number of edge descriptions.");
         }
 
         for (int i = 2;i < values.size();i++){
@@ -81,8 +87,8 @@ public class AdjacencyMatrixGraph implements UndirectedGraph {
      * @return a list of the vertex numbers in the graph.
      */
     @Override
-    public List<Integer> getListOfVertices() {
-        List list = new ArrayList();
+    public ArrayList<Integer> getListOfVertices() {
+        ArrayList<Integer> list = new ArrayList();
         if (matrix.length > 0) {
             for (int i = 0; i < matrix[0].length; i++) {
                 list.add(i);
@@ -97,23 +103,19 @@ public class AdjacencyMatrixGraph implements UndirectedGraph {
      * the vertices and the weight of the corresponding edge
      */
     @Override
-    public List getListOfEdges(int vertex) throws VertexNotFoundException{
+    public ArrayList<int[]> getListOfEdges(int vertex) throws VertexNotFoundException{
         if (vertex >= matrix.length) {
             throw new VertexNotFoundException();
         }
-        List list;
-        if(isWeighted) {
-            list = new ArrayList<Integer[]>();
-        } else {
-            list = new ArrayList<Integer>();
-        }
+        ArrayList<int[]> list = new ArrayList<>();
+
         int targetVertex = 0;
         for (int weight : matrix[vertex]){
             if (weight != 0) {
                 if (isWeighted) {
-                    list.add(new Integer[] {targetVertex, weight});
+                    list.add(new int[] {targetVertex, weight});
                 } else {
-                    list.add(new Integer(targetVertex));
+                    list.add(new int[] {targetVertex});
                 }
             }
             targetVertex++;

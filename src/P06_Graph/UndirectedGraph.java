@@ -1,5 +1,6 @@
 package P06_Graph;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,7 +30,7 @@ interface UndirectedGraph {
     /**
      * @return Returns a list of all the vertices in the graph.
      */
-    List<Integer> getListOfVertices();
+    ArrayList<Integer> getListOfVertices();
 
     /**
      * Returns a list of edges that are connected to the given vertice.
@@ -37,5 +38,5 @@ interface UndirectedGraph {
      * @param vertex the vertex to check for edges
      * @return list of edges connected to the vertice.
      */
-    List getListOfEdges(int vertex) throws VertexNotFoundException;
+    ArrayList<int[]> getListOfEdges(int vertex) throws VertexNotFoundException;
 }
