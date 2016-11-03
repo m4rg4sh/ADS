@@ -51,11 +51,11 @@ public class AdjacencyMatrixGraph implements UndirectedGraph {
         }
 
         for (int i = 2;i < values.size();i++){
-            if (isWeighted) {
-                matrix[values.get(i)][values.get(++i)] = values.get(++i);
-            } else {
-                matrix[values.get(i)][values.get(++i)] = 1;
-            }
+            int source = values.get(i);
+            int target = values.get(++i);
+            int weight = isWeighted? values.get(++i) : 1;
+            matrix[source][target] = weight;
+            matrix[target][source] = weight;
         }
     }
 
@@ -80,7 +80,7 @@ public class AdjacencyMatrixGraph implements UndirectedGraph {
                 }
             }
         }
-        return counter;
+        return counter / 2;
     }
 
     /**

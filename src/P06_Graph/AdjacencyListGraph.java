@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class AdjacencyListGraph implements UndirectedGraph {
     private boolean isWeighted;
-    private LinkedList<LinkedList<P06_Graph.Edge>> listOfVertices;
+    private LinkedList<LinkedList<int[]>> listOfVertices;
 
     /**
      * creates a graph.
@@ -51,11 +51,12 @@ public class AdjacencyListGraph implements UndirectedGraph {
         }
 
         for (int i = 2;i < values.size();i++){
-            if (isWeighted) {
-                listOfVertices.get(values.get(i)).add(new WeightedEdge(values.get(++i),values.get(++i)));
-            } else {
-                listOfVertices.get(values.get(i)).add(new Edge(values.get(++i)));
-            }
+            int source = values.get(i);
+            int target = values.get(++i);
+            int weight = isWeighted? values.get(++i) : 1;
+            listOfVertices.get(source).add(new int[]{target,weight});
+            listOfVertices.get(target).add(new int[]{source,weight});
+
         }
     }
 
@@ -73,10 +74,10 @@ public class AdjacencyListGraph implements UndirectedGraph {
     @Override
     public int getNumberOfEdges() {
         int counter = 0;
-        for (LinkedList<P06_Graph.Edge> listOfEdges : listOfVertices) {
+        for (LinkedList<int[]> listOfEdges : listOfVertices) {
             counter += listOfEdges.size();
         }
-        return counter;
+        return counter / 2;
     }
 
     /**
@@ -104,17 +105,6 @@ public class AdjacencyListGraph implements UndirectedGraph {
             throw new VertexNotFoundException();
         }
 
-        ArrayList<int[]> list = new ArrayList<>();
-
-        for (P06_Graph.Edge edge : listOfVertices.get(vertex)) {
-            if (edge instanceof WeightedEdge) {
-                list.add(new int[]{edge.getTarget(), ((WeightedEdge) edge).getWeight()});
-            } else if (edge instanceof P06_Graph.Edge) {
-                list.add(new int[] {edge.getTarget()});
-            } else {
-                throw new RuntimeException("Edge type unknown");
-            }
-        }
-        return list;
+        return new ArrayList<>(listOfVertices.get(vertex));
     }
 }

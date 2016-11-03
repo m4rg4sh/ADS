@@ -14,13 +14,11 @@ public class DistanceCalculator {
 
     public static void main (String[] args) throws VertexNotFoundException {
         UndirectedGraph graph = new AdjacencyMatrixGraph("P07_Dijkstra/samplegraph.csv");
-        ArrayList<Integer> vertices = graph.getListOfVertices();
         ArrayList<String> knownEdges = new ArrayList<>();
         int distanceTotal = 0;
 
-        for (int vertex : vertices) {
-            ArrayList<int[]> edges = graph.getListOfEdges(vertex);
-            for (int[] edge : edges) {
+        for (int vertex : graph.getListOfVertices()) {
+            for (int[] edge : graph.getListOfEdges(vertex)) {
                 if (!knownEdges.contains(vertex + "" + edge[0]) && !knownEdges.contains(edge[0] + "" + vertex)){
                     knownEdges.add(vertex + "" + edge[0]);
                     distanceTotal += edge[1];
