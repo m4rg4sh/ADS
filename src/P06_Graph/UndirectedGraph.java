@@ -10,27 +10,27 @@ import java.util.List;
  * @author Lawrence Markwalder <markwlaw@students.zhaw.ch>
  * @author Luca Egli <eglilu01@students.zhaw.ch>
  */
-interface UndirectedGraph {
+public interface UndirectedGraph {
     /**
      * Imports a undirected graph from a file. The graph can be weighted or not.
      * @param filepath The path to the file which will be imported
      */
-    void importFromFile(String filepath);
+    public void importFromFile(String filepath);
 
     /**
      * @return The number of vertices in the graph.
      */
-    int getNumberOfVertices();
+    public int getNumberOfVertices();
 
     /**
      * @return The number of edges in the graph.
      */
-    int getNumberOfEdges();
+    public int getNumberOfEdges();
 
     /**
      * @return Returns a list of all the vertices in the graph.
      */
-    ArrayList<Integer> getListOfVertices();
+    public ArrayList<Integer> getListOfVertices();
 
     /**
      * Returns a list of edges that are connected to the given vertice.
@@ -38,5 +38,5 @@ interface UndirectedGraph {
      * @param vertex the vertex to check for edges
      * @return list of edges connected to the vertice.
      */
-    ArrayList<int[]> getListOfEdges(int vertex) throws VertexNotFoundException;
+    public ArrayList<int[]> getListOfEdges(int vertex) throws VertexNotFoundException;
 }
