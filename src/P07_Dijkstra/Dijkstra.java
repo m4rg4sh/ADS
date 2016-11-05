@@ -1,7 +1,7 @@
 package P07_Dijkstra;
 import P06_Graph.*;
 
-import java.util.*;
+import java.util.ArrayList;
 
 /**
  * @author Stefan Epprecht <epprest1@students.zhaw.ch>
@@ -10,43 +10,60 @@ import java.util.*;
  *
  * Sources:
  * - Saake/Sattler
- * - https://stackoverflow.com/questions/3699141/how-to-sort-an-array-of-ints-using-a-custom-comparator
  */
 public class Dijkstra {
-    private ArrayList<Integer> list;
-    private HashMap<Integer,Integer> resultMap;
+    static final int NO_PREDECESSOR = -1;
+    private static final int DISTANCE_INDEX = 0;
+    private static final int PREDECESSOR_INDEX = 1;
+    private static final int VERTEX_INDEX = 0;
+    private static final int WEIGHT_INDEX = 1;
 
-    public static void main (String[] args) throws VertexNotFoundException{
-        HashMap<Integer,Integer> map = new Dijkstra().run(new AdjacencyListGraph("P07_Dijkstra/samplegraph.csv"),1);
+    private ArrayList<Integer> list;
+    private Integer[][] resultTable;
+    private UndirectedGraph graph;
+    private int startVertex;
+
+    public Dijkstra(UndirectedGraph graph, int startVertex) {
+        this.graph = graph;
+        this.startVertex = startVertex;
+        resultTable = new Integer[graph.getNumberOfVertices()][2];
+        list = new ArrayList<>();
     }
 
-    public HashMap<Integer,Integer> run(UndirectedGraph graph, int startVertex) throws VertexNotFoundException {
-        resultMap = new HashMap<>();
-        list = new ArrayList<>();
+    public static void main (String[] args) throws VertexNotFoundException {
+        Dijkstra dijkstra = new Dijkstra(new AdjacencyListGraph("P07_Dijkstra/samplegraph.csv"), 0);
+        dijkstra.dijkstrasAlgorithm();
+    }
+
+    public Integer[][] dijkstrasAlgorithm() throws VertexNotFoundException {
 
         for(int vertex : graph.getListOfVertices()){
-            resultMap.put(vertex,Integer.MAX_VALUE);
+            resultTable[vertex][DISTANCE_INDEX] = Integer.MAX_VALUE;
+            list.add(vertex);
         }
-        resultMap.put(startVertex,0);
-        list.addAll(graph.getListOfVertices());
+        resultTable[startVertex][DISTANCE_INDEX] = 0;
+        resultTable[startVertex][PREDECESSOR_INDEX] = NO_PREDECESSOR;
 
         while (!list.isEmpty()){
             int currentVertex = extractMinimum();
             for (int[] edge : graph.getListOfEdges(currentVertex)){
-                if(resultMap.get(currentVertex) + edge[1] < resultMap.get(edge[0])) {
-                    resultMap.put(edge[0],resultMap.get(currentVertex) + edge[1]);
+                if(resultTable[currentVertex][DISTANCE_INDEX] + edge[WEIGHT_INDEX]
+                        < resultTable[edge[VERTEX_INDEX]][DISTANCE_INDEX]) {
+                    resultTable[edge[VERTEX_INDEX]][DISTANCE_INDEX]
+                            = resultTable[currentVertex][DISTANCE_INDEX] + edge[WEIGHT_INDEX];
+                    resultTable[edge[VERTEX_INDEX]][PREDECESSOR_INDEX] = currentVertex;
                 }
             }
         }
-        return resultMap;
+        return resultTable;
     }
 
     private int extractMinimum(){
         int minimum = Integer.MAX_VALUE;
         int shortestPath = -1;
         for (int vertex : list) {
-            if (resultMap.get(vertex) < minimum) {
-                minimum = resultMap.get(vertex);
+            if (resultTable[vertex][DISTANCE_INDEX] < minimum) {
+                minimum = resultTable[vertex][DISTANCE_INDEX];
                 shortestPath = vertex;
             }
         }
