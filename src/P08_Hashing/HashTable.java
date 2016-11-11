@@ -1,6 +1,7 @@
 package P08_Hashing;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * @author Stefan Epprecht <epprest1@students.zhaw.ch>
@@ -115,7 +116,7 @@ public class HashTable<K,V> implements IHashTable<K,V> {
      */
     @Override
     public Iterator<V> iterator() {
-        return null;
+        return new HashTableIterator<V>();
     }
 
     /**
@@ -203,12 +204,59 @@ public class HashTable<K,V> implements IHashTable<K,V> {
         return index;
     }
 
-    private void rehash(){
-        Entry<K,V> oldTable[] = table;
-        table = new Entry[(int)(table.length*1.5)+1];
-        for (int i = 0;i < oldTable.length;i++)
-            if (oldTable[i] != null && !oldTable[i].isDeleted()){
-                add(oldTable[i].getKey(),oldTable[i].getValue());
+    private void rehash() {
+        Entry<K, V> oldTable[] = table;
+        table = new Entry[(int) (table.length * 1.5) + 1];
+        for (int i = 0; i < oldTable.length; i++) {
+            if (oldTable[i] != null && !oldTable[i].isDeleted()) {
+                add(oldTable[i].getKey(), oldTable[i].getValue());
             }
+        }
+    }
+
+    private class HashTableIterator<T> implements Iterator<V> {
+        private int position;
+
+        public HashTableIterator(){
+            position = 0;
+        }
+
+        @Override
+        public boolean hasNext() {
+            boolean hasNext = false;
+            try {
+                findNextNonEmptyField();
+                hasNext = true;
+            }
+            catch (NoSuchElementException e) {
+                hasNext = false;
+            }
+            finally {
+                return hasNext;
+            }
+        }
+
+        @Override
+        public V next() {
+            position = findNextNonEmptyField();
+            return table[position++].getValue();
+        }
+
+
+        private int findNextNonEmptyField() throws NoSuchElementException {
+            boolean found = false;
+            int searchposition = position;
+            while (searchposition < table.length && found == false){
+                if (table[searchposition] != null && !table[searchposition].isDeleted()) {
+                    found = true;
+                } else {
+                    searchposition++;
+                }
+            }
+            if (found == false) {
+                throw new NoSuchElementException("No more elements");
+            }
+            return searchposition;
+        }
     }
 }

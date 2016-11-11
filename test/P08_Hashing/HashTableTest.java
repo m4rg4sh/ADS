@@ -1,6 +1,10 @@
 package P08_Hashing;
 
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import static org.junit.Assert.*;
 
 /**
@@ -119,5 +123,22 @@ public class HashTableTest {
         HashTable<String, Integer> table = createFullHashTable();
         table.setLoadFactorForResize(0.5);
         //TODO use spy to check if a rehashing occured
+    }
+
+    @Test
+    public void shouldReturnCorrectIterator(){
+        HashTable<String, Integer> table = createFullHashTable();
+        Iterator<Integer> it = table.iterator();
+        ArrayList<Integer> results = new ArrayList<>();
+        while (it.hasNext()){
+            results.add(it.next());
+        }
+        assertEquals(true,results.contains(1));
+        assertEquals(true,results.contains(2));
+        assertEquals(true,results.contains(3));
+        assertEquals(true,results.contains(4));
+        assertEquals(true,results.contains(5));
+        assertEquals(true,results.contains(6));
+        assertEquals(true,results.contains(7));
     }
 }

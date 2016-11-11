@@ -1,14 +1,13 @@
 package P08_Hashing;
 
 import java.util.Iterator;
-import java.util.Map;
 
 /**
  * @author Stefan Epprecht <epprest1@students.zhaw.ch>
  * @author Lawrence Markwalder <markwlaw@students.zhaw.ch>
  * @author Luca Egli <eglilu01@students.zhaw.ch>
  */
-public interface IHashTable<K,V> {
+public interface IHashTable<K,V> extends Iterable<V>{
     int size();
     boolean isEmpty();
     void add(K key,V value);

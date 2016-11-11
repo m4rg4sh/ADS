@@ -1,6 +1,5 @@
 package P08_Hashing;
 
-import java.util.Map;
 
 /**
  * This class represents an entry for the hashtable.
@@ -35,5 +34,4 @@ public class Entry<K,V> {
     public boolean isDeleted(){
         return deleted;
     }
-
 }
