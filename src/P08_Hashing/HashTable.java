@@ -10,12 +10,13 @@ import java.util.NoSuchElementException;
  *
  *     Sources:
  *     - java.util.Hashtable for the Entry&lt;K,V&gt; structure.
- *     - Saake/Sattler for general thing and the "isDelted" idea.
+ *     - Saake/Sattler for general thing and the lazy deletion idea.
  */
 public class HashTable<K,V> implements IHashTable<K,V> {
-    public static final boolean DEFAULT_PROBING_METHOD = true;
-    public static final int DEFAULT_CAPACITY = 10;
-    public static final double DEFAULT_LOADFACTOR = 0.75;
+    private static final boolean DEFAULT_PROBING_METHOD = true;
+    private static final int DEFAULT_CAPACITY = 11;
+    private static final double DEFAULT_LOADFACTOR = 0.6;
+    private static final int PROBING_THRESHOLD = 25;
 
     private Entry<K,V> table[];
     private int size;
@@ -65,8 +66,10 @@ public class HashTable<K,V> implements IHashTable<K,V> {
      */
     @Override
     public void add(K key, V value) {
-        int index = getAvailableIndex(key);
-        if (table[index] == null || table[index].isDeleted()) size++;
+        int index = getNextAvailablePosition(key);
+        if (table[index] == null || table[index].isDeleted()){
+            size++;
+        }
         table[index] = new Entry<>(key,value);
         checkLoadLimit();
     }
@@ -92,18 +95,25 @@ public class HashTable<K,V> implements IHashTable<K,V> {
      * @return true if it exiss in the table
      */
     public boolean containsKey(K key){
-        return getIndexOfKey(key) != null;
+        try{
+            getIndexOfKey(key);
+            return true;
+        }
+        catch (NoSuchElementException e){
+            return false;
+        }
     }
 
     /**
      * Removes an element from the table if it exists.
      * @param key the key to remove.
-     * @return the value of the element or null if the key isn't present.
+     * @return the value of the element.
+     * @throws NoSuchElementException if the key is not present in the table.
      */
     @Override
-    public V remove(K key) {
+    public V remove(K key) throws NoSuchElementException {
         Integer index = getIndexOfKey(key);
-        if (index == null) return null;
+        if (index == null) throw new NoSuchElementException();
 
         table[index].delete();
         size--;
@@ -152,13 +162,17 @@ public class HashTable<K,V> implements IHashTable<K,V> {
      * @param key the key to search
      * @return the index where the key is stored or null if it isn't present.
      */
-    private Integer getIndexOfKey(K key){
+    private Integer getIndexOfKey(K key) throws NoSuchElementException{
         Integer index = calculateIndex(key);
+        int counter = 1;
         while (table[index] != null && table[index].getKey() != key) {
             index = getNextIndex(index);
+            if (counter++ >= PROBING_THRESHOLD){
+                throw new IllegalStateException("Maximum number of probings exceeded");
+            }
         }
         if (table[index] == null || table[index].isDeleted()) {
-            index = null;
+            throw new NoSuchElementException();
         }
         return index;
 
@@ -170,10 +184,14 @@ public class HashTable<K,V> implements IHashTable<K,V> {
      * @param key the key that should be stored.
      * @return the correct index for the key.
      */
-    private int getAvailableIndex(K key) {
+    private int getNextAvailablePosition(K key) {
         int index = calculateIndex(key);
-        while (table[index] != null && !table[index].isDeleted() && table[index].getKey() != key) {
-            index = getNextIndex(index);
+        int counter = 1;
+            while (table[index] != null && !table[index].isDeleted() && table[index].getKey() != key) {
+                index = getNextIndex(index);
+                if (counter++ >= PROBING_THRESHOLD){
+                    throw new IllegalStateException("Maximum number of probings exceeded");
+                }
         }
         return index;
     }
@@ -185,13 +203,13 @@ public class HashTable<K,V> implements IHashTable<K,V> {
      */
     private int getNextIndex(int index) {
         if (useLinearProbing) {
-            return linearProbing(index);
+            return getNextLinearIndex(index);
         } else {
-            return quadraticProbing(index);
+            return getNextQuadraticIndex(index);
         }
     }
 
-    private int linearProbing(int index) {
+    private int getNextLinearIndex(int index) {
         if (++index < table.length) {
             return index;
         } else {
@@ -199,19 +217,28 @@ public class HashTable<K,V> implements IHashTable<K,V> {
         }
     }
 
-    private int quadraticProbing(int index) {
-        //TODO implement quadraticProbing
+    private int getNextQuadraticIndex(int index) {
+        //TODO implement getNextQuadraticIndex
         return index;
     }
 
     private void rehash() {
         Entry<K, V> oldTable[] = table;
-        table = new Entry[(int) (table.length * 1.5) + 1];
+        table = new Entry[nextTableSize()];
         for (int i = 0; i < oldTable.length; i++) {
             if (oldTable[i] != null && !oldTable[i].isDeleted()) {
                 add(oldTable[i].getKey(), oldTable[i].getValue());
             }
         }
+    }
+
+    private int nextTableSize(){
+        for(int possibleSize : QuadraticProbe.QUADRATIC_PROBING_HASH_TABLE_SIZE_LIST){
+            if (possibleSize > size && possibleSize*loadFactor > size){
+                return possibleSize;
+            }
+        }
+        throw new IllegalStateException("Maximum table size reached");
     }
 
     private class HashTableIterator<T> implements Iterator<V> {
@@ -223,21 +250,17 @@ public class HashTable<K,V> implements IHashTable<K,V> {
 
         @Override
         public boolean hasNext() {
-            boolean hasNext = false;
             try {
                 findNextNonEmptyField();
-                hasNext = true;
+                 return true;
             }
-            catch (NoSuchElementException e) {
-                hasNext = false;
-            }
-            finally {
-                return hasNext;
+            catch (NoSuchElementException e){
+                return false;
             }
         }
 
         @Override
-        public V next() {
+        public V next() throws NoSuchElementException{
             position = findNextNonEmptyField();
             return table[position++].getValue();
         }

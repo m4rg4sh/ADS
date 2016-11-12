@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import static org.junit.Assert.*;
 
@@ -12,7 +13,7 @@ import static org.junit.Assert.*;
  * @author Lawrence Markwalder <markwlaw@students.zhaw.ch>
  * @author Luca Egli <eglilu01@students.zhaw.ch>
  */
-public class HashTableTest {
+public class LinearHashTableTest {
     @Test
     public void shouldReportSizeCorrectly(){
         HashTable<String, Integer> table = new HashTable<>();
@@ -140,5 +141,31 @@ public class HashTableTest {
         assertEquals(true,results.contains(5));
         assertEquals(true,results.contains(6));
         assertEquals(true,results.contains(7));
+    }
+
+    @Test
+    public void shouldHandleInexistentKeyInEmptyTableCorrectly(){
+        HashTable<String,Integer> emptyTable = new HashTable<>();
+        assertEquals(false,emptyTable.containsKey("two"));
+        assertEquals(false,emptyTable.containsValue(2));
+    }
+
+    @Test
+    public void shouldHandleInexistentKeyInTableCorrectly(){
+        HashTable<String,Integer> fullTable = createFullHashTable();
+        assertEquals(false,fullTable.containsKey("onehundred"));
+        assertEquals(false,fullTable.containsValue(100));
+    }
+
+    @Test (expected = NoSuchElementException.class)
+    public void shouldHandleRemovalOfInexistentKeyInEmptyTableCorrectly(){
+        HashTable<String,Integer> emptyTable = new HashTable<>();
+        emptyTable.remove("two");
+    }
+
+    @Test (expected = NoSuchElementException.class)
+    public void shouldHandleRemovalOfInexistentKeyInTableCorrectly(){
+        HashTable<String,Integer> fullTable = createFullHashTable();
+        fullTable.remove("onehundred");
     }
 }
