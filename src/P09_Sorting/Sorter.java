@@ -21,11 +21,22 @@ public class Sorter {
 
 	/**
 	 * Sorts an array with the insertion sort algorithm from Saake/Sattler
-	 * @param numbers
+	 * @param numbers the array to be sorted
 	 */
 	public static void insertionSort(int[] numbers){
 		if (numbers == null) return;
-		for (int i = 1; i < numbers.length;i++){
+		insertionSort(numbers,0,numbers.length-1);
+	}
+
+
+	/**
+	 * Sorts an array with the insertion sort algorithm from Saake/Sattler
+	 * @param numbers the array to be sorted
+	 * @param l lower bound index
+	 * @param u upper bound index
+	 */
+	private static void insertionSort(int[] numbers,int l, int u){
+		for (int i = l; i <= u;i++){
 			int currentElement = numbers[i];
 			boolean stop = false;
 			int j = i-1;
@@ -58,7 +69,7 @@ public class Sorter {
 	 * @param l lower bound index
 	 * @param u upper bound index
 	 */
-	public static void quickSortClassic(int[] numbers, int l, int u){
+	private static void quickSortClassic(int[] numbers, int l, int u){
 		if (u > l) {
 			int pivotPosition = l + ((u-l)/2);
 			pivotPosition = divide(numbers,l,u,pivotPosition);
@@ -84,7 +95,7 @@ public class Sorter {
 	 * @param l lower bound index
 	 * @param u upper bound index
 	 */
-	public static void quickSortMedian(int[] numbers, int l, int u){
+	private static void quickSortMedian(int[] numbers, int l, int u){
 		if (u > l) {
 			int pivotPosition = l;
 			if (u-l > 1) {
@@ -93,6 +104,39 @@ public class Sorter {
 			pivotPosition = divide(numbers,l,u,pivotPosition);
 			quickSortMedian(numbers, l, pivotPosition-1);
 			quickSortMedian(numbers, pivotPosition+1, u);
+		}
+	}
+
+	/**
+	 * Sorts an array with the quicksort algorithm from Saake/Sattler.
+	 * The algorithm uses the median of the first, middle and last element of the array as the starting pivot element.
+	 * @param numbers the array to be sorted
+	 */
+	public static void quickSortTurbo(int[] numbers){
+		if (numbers == null) return;
+		quickSortTurbo(numbers,0,numbers.length-1);
+	}
+
+	/**
+	 * Sorts an array with the quicksort algorithm from Saake/Sattler.
+	 * The algorithm uses the median of the first, middle and last element of the array as the starting pivot element.
+	 * @param numbers the array to be sorted
+	 * @param l lower bound index
+	 * @param u upper bound index
+	 */
+	private static void quickSortTurbo(int[] numbers, int l, int u){
+		if (u > l) {
+			if (u-l > 10) {
+				int pivotPosition = l;
+				if (u - l > 1) {
+					pivotPosition = indexOfMedian(numbers, l, l + ((u - l) / 2), u);
+				}
+				pivotPosition = divide(numbers, l, u, pivotPosition);
+				quickSortTurbo(numbers, l, pivotPosition - 1);
+				quickSortTurbo(numbers, pivotPosition + 1, u);
+			} else {
+				insertionSort(numbers,l,u);
+			}
 		}
 	}
 
