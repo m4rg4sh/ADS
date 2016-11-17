@@ -7,10 +7,10 @@ import java.util.Arrays;
  * @author Lawrence Markwalder &lt;markwlaw@students.zhaw.ch&gt;
  * @author Luca Egli &lt;eglilu01@students.zhaw.ch&gt;
  *
- * Source: Saake/Sattler for the basic insertionSort and quicksort algorithms
+ * Source: Saake/Sattler for the insertionSort and quicksort algorithms
  */
 public class Sorter {
-	private static final int PARALLEL_THRESHOLD = 100;
+	private static final int PARALLEL_THRESHOLD = 5000;
 
 	/**
 	 * Sorts an array with the default sorting algorithm in the Arrays class
@@ -153,8 +153,7 @@ public class Sorter {
 	 */
 	private static int divide(int[] numbers, int l, int u, int pivotPosition){
 		int pivotValue = numbers[pivotPosition];
-		numbers[pivotPosition] = numbers[u];
-		numbers[u] = pivotValue;
+		swap(numbers,u,pivotPosition);
 		pivotPosition = l;
 		for (int i = l; i < u;i++) {
 			if (numbers[i] <= pivotValue) {
@@ -164,10 +163,21 @@ public class Sorter {
 				pivotPosition++;
 			}
 		}
-		numbers[u] = numbers[pivotPosition];
-		numbers[pivotPosition] = pivotValue;
+		swap(numbers,u,pivotPosition);
 
 		return pivotPosition;
+	}
+
+	/**
+	 * swaps the position of two values in an array
+	 * @param numbers the array
+	 * @param index1 index of value 1
+	 * @param index2 index of value 2
+	 */
+	private static void swap(int[] numbers, int index1, int index2) {
+		int save = numbers[index1];
+		numbers[index1] = numbers[index2];
+		numbers[index2] = save;
 	}
 
 	/**
@@ -196,11 +206,21 @@ public class Sorter {
 		}
 	}
 
+	/**
+	 * Sorts an array using quickSortTurbo with an adequate number of parallel threads (1 or 2).
+	 * @param numbers the array to sort
+	 */
 	public static void quickSortParallel(int [] numbers){
 		if (numbers == null) return;
 		quickSortParallel(numbers,0,numbers.length-1);
 	}
 
+	/**
+	 * Sorts an array using quickSortTurbo with an adequate number of parallel threads (1 or 2).
+	 * @param numbers the array to sort
+	 * @param l lower bound index
+	 * @param u upper bound index
+	 */
 	private static void quickSortParallel(int[] numbers, int l, int u) {
 		if (numbers.length > PARALLEL_THRESHOLD) {
 			int pivotPosition = l;

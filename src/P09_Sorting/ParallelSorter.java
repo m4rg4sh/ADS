@@ -1,11 +1,11 @@
 package P09_Sorting;
 
 /**
- * @author Stefan Epprecht <epprest1@students.zhaw.ch>
- * @author Lawrence Markwalder <markwlaw@students.zhaw.ch>
- * @author Luca Egli <eglilu01@students.zhaw.ch>
+ * @author Stefan Epprecht &lt;epprest1@students.zhaw.ch&gt;
+ * @author Lawrence Markwalder &lt;markwlaw@students.zhaw.ch&gt;
+ * @author Luca Egli &lt;eglilu01@students.zhaw.ch&gt;
  */
-public class ParallelSorter extends Sorter implements Runnable {
+public class ParallelSorter implements Runnable {
     private int l;
     private int u;
     private int[] numbers;
@@ -18,6 +18,6 @@ public class ParallelSorter extends Sorter implements Runnable {
 
     @Override
     public void run() {
-        quickSortTurbo(numbers,l,u);
+        Sorter.quickSortTurbo(numbers,l,u);
     }
 }
