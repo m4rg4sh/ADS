@@ -10,7 +10,7 @@ public class InsertionSortTest {
 	@Test
 	public void shouldNotDoAnythingForNull() {
 		int[] parameter = null;
-		parameter = Sorter.insertionSort(parameter);
+		Sorter.insertionSort(parameter);
 		assertNull(parameter);
 	}
 	
@@ -19,7 +19,7 @@ public class InsertionSortTest {
 	public void shouldNotDoAnythingForSingleElement() {
 		int[] parameter = {1};
 		int[] expected = {1};
-		parameter = Sorter.insertionSort(parameter);
+		Sorter.insertionSort(parameter);
 		assertArrayEquals(expected, parameter);
 	}
 	
@@ -27,7 +27,7 @@ public class InsertionSortTest {
 	public void shouldKeepAlreadySortedArray() {
 		int[] parameter = {-10, -3, 0, 0, 1, 1, 111, 39393939};
 		int[] expected = {-10, -3, 0, 0, 1, 1, 111, 39393939};
-		parameter = Sorter.insertionSort(parameter);
+		Sorter.insertionSort(parameter);
 		assertArrayEquals(expected, parameter);
 	}
 	
@@ -35,7 +35,7 @@ public class InsertionSortTest {
 	public void shouldSortAscending() {
 		int[] parameter = {4, -10, 2, 5, -10, 3, 202, -111, 0, 1};
 		int[] expected = {-111, -10, -10, 0, 1, 2, 3, 4, 5, 202};
-		parameter = Sorter.insertionSort(parameter);
+		Sorter.insertionSort(parameter);
 		assertArrayEquals(expected, parameter);
 	}
 	

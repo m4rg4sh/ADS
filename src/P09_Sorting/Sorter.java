@@ -15,8 +15,8 @@ public class Sorter {
 		if (numbers != null) Arrays.sort(numbers);	
 	}
 
-	public static int[] insertionSort(int[] numbers){
-		if (numbers == null) return null;
+	public static void insertionSort(int[] numbers){
+		if (numbers == null) return;
 		for (int i = 1; i < numbers.length;i++){
 			int currentElement = numbers[i];
 			boolean stop = false;
@@ -31,22 +31,20 @@ public class Sorter {
 			}
 			numbers[j+1] = currentElement;
 		}
-		return numbers;
 	}
 
-	public static int[] quickSort(int[] numbers){
-		if (numbers == null) return null;
-		return quickSort(numbers,0,numbers.length-1);
+	public static void quickSort(int[] numbers){
+		if (numbers == null) return;
+		quickSort(numbers,0,numbers.length-1);
 	}
 
-	public static int[] quickSort(int[] numbers, int u, int o){
+	public static void quickSort(int[] numbers, int u, int o){
 		if (o > u) {
 			int pivotPosition = u + ((o-u)/2);
 			pivotPosition = divide(numbers,u,o,pivotPosition);
 			quickSort (numbers, u, pivotPosition-1);
 			quickSort (numbers, pivotPosition+1, o);
 		}
-		return numbers;
 	}
 
 	private static int divide(int[] numbers, int u, int o, int pivotPosition){
