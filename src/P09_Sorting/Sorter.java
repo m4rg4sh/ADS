@@ -7,9 +7,10 @@ import java.util.Arrays;
  * @author Lawrence Markwalder &lt;markwlaw@students.zhaw.ch&gt;
  * @author Luca Egli &lt;eglilu01@students.zhaw.ch&gt;
  *
- * Source: Saake/Sattler for the insertionsort and quicksort algorithms
+ * Source: Saake/Sattler for the basic insertionSort and quicksort algorithms
  */
 public class Sorter {
+	private static final int PARALLEL_THRESHOLD = 100;
 
 	/**
 	 * Sorts an array with the default sorting algorithm in the Arrays class
@@ -124,7 +125,7 @@ public class Sorter {
 	 * @param l lower bound index
 	 * @param u upper bound index
 	 */
-	private static void quickSortTurbo(int[] numbers, int l, int u){
+	protected static void quickSortTurbo(int[] numbers, int l, int u){
 		if (u > l) {
 			if (u-l > 10) {
 				int pivotPosition = l;
@@ -193,7 +194,35 @@ public class Sorter {
 		} else {
 			throw new RuntimeException("Incorrect median");
 		}
+	}
 
+	public static void quickSortParallel(int [] numbers){
+		if (numbers == null) return;
+		quickSortParallel(numbers,0,numbers.length-1);
+	}
+
+	private static void quickSortParallel(int[] numbers, int l, int u) {
+		if (numbers.length > PARALLEL_THRESHOLD) {
+			int pivotPosition = l;
+			if (u - l > 1) {
+				pivotPosition = indexOfMedian(numbers, l, l + ((u - l) / 2), u);
+			}
+			pivotPosition = divide(numbers, l, u, pivotPosition);
+
+			Thread t1 = new Thread(new ParallelSorter(numbers, l, pivotPosition - 1), "Sorter A");
+			Thread t2 = new Thread(new ParallelSorter(numbers, pivotPosition + 1, u), "Sorter B");
+
+			t1.start();
+			t2.start();
+
+			try {
+				t1.join();
+				t2.join();
+			} catch (InterruptedException e) {
+			}
+		} else {
+			quickSortTurbo(numbers);
+		}
 	}
 
 }
