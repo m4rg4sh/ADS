@@ -210,10 +210,7 @@ public class Sorter {
 	 */
 	public static void quickSortParallel(int [] numbers){
 		if (numbers == null) return;
-		int pivotPosition = indexOfMedian(numbers);
-		pivotPosition = divide(numbers, 0, numbers.length - 1, pivotPosition);
-		quickSortParallel(numbers, 0, pivotPosition - 1);
-		quickSortParallel(numbers, pivotPosition + 1, numbers.length - 1);
+		quickSortParallel(numbers, 0, numbers.length-1);
 	}
 
 	/**
@@ -224,8 +221,8 @@ public class Sorter {
 	 */
 	private static void quickSortParallel(int[] numbers, int l, int u) {
 		if (numbers.length > PARALLEL_THRESHOLD) {
-			int pivotPosition = l + ((u-l)/2);
-			pivotPosition = divide(numbers, l, u, pivotPosition);
+			int pivotPosition = indexOfMedian(numbers);
+			pivotPosition = divide(numbers, 0, numbers.length - 1, pivotPosition);
 
 			Thread t1 = new Thread(new ParallelSorter(numbers, l, pivotPosition - 1), "Sorter A");
 			Thread t2 = new Thread(new ParallelSorter(numbers, pivotPosition + 1, u), "Sorter B");
