@@ -10,7 +10,7 @@ import java.util.Arrays;
  * Source: Saake/Sattler for the insertionSort and quicksort algorithms
  */
 public class Sorter {
-	private static final int PARALLEL_THRESHOLD = 5000;
+	private static final int PARALLEL_THRESHOLD = 10;
 
 	/**
 	 * Sorts an array with the default sorting algorithm in the Arrays class
@@ -86,7 +86,10 @@ public class Sorter {
 	 */
 	public static void quickSortMedian(int[] numbers){
 		if (numbers == null) return;
-		quickSortMedian(numbers,0,numbers.length-1);
+		int pivotPosition = indexOfMedian(numbers);
+		pivotPosition = divide(numbers, 0, numbers.length - 1, pivotPosition);
+		quickSortMedian(numbers, 0, pivotPosition - 1);
+		quickSortMedian(numbers, pivotPosition + 1, numbers.length - 1);
 	}
 
 	/**
@@ -98,10 +101,7 @@ public class Sorter {
 	 */
 	private static void quickSortMedian(int[] numbers, int l, int u){
 		if (u > l) {
-			int pivotPosition = l;
-			if (u-l > 1) {
-				pivotPosition = indexOfMedian(numbers,l,l+((u-l)/2),u);
-			}
+			int pivotPosition = l + ((u-l)/2);
 			pivotPosition = divide(numbers,l,u,pivotPosition);
 			quickSortMedian(numbers, l, pivotPosition-1);
 			quickSortMedian(numbers, pivotPosition+1, u);
@@ -115,7 +115,10 @@ public class Sorter {
 	 */
 	public static void quickSortTurbo(int[] numbers){
 		if (numbers == null) return;
-		quickSortTurbo(numbers,0,numbers.length-1);
+		int pivotPosition = indexOfMedian(numbers);
+		pivotPosition = divide(numbers, 0, numbers.length - 1, pivotPosition);
+		quickSortTurbo(numbers, 0, pivotPosition - 1);
+		quickSortTurbo(numbers, pivotPosition + 1, numbers.length - 1);
 	}
 
 	/**
@@ -127,11 +130,8 @@ public class Sorter {
 	 */
 	protected static void quickSortTurbo(int[] numbers, int l, int u){
 		if (u > l) {
-			if (u-l > 10) {
-				int pivotPosition = l;
-				if (u - l > 1) {
-					pivotPosition = indexOfMedian(numbers, l, l + ((u - l) / 2), u);
-				}
+			if (u-l > 500) {
+				int pivotPosition = l + ((u-l)/2);
 				pivotPosition = divide(numbers, l, u, pivotPosition);
 				quickSortTurbo(numbers, l, pivotPosition - 1);
 				quickSortTurbo(numbers, pivotPosition + 1, u);
@@ -184,23 +184,21 @@ public class Sorter {
 	 * calculates the median of the three indices
 	 * Source: http://stackoverflow.com/a/19045659
 	 * @param numbers the array that contains the elements
-	 * @param indexA index of the first element
-	 * @param indexB index of the second element
-	 * @param indexC index of the third element
+
 	 * @return index of the median element
 	 */
-	private static int indexOfMedian(int[] numbers, int indexA, int indexB, int indexC){
-		int a = numbers[indexA];
-		int b = numbers[indexB];
-		int c = numbers[indexC];
+	private static int indexOfMedian(int[] numbers){
+		int a = numbers[0];
+		int b = numbers[numbers.length/2];
+		int c = numbers[numbers.length-1];
 		int median = Math.max(Math.min(a,b), Math.min(Math.max(a,b),c));
 
 		if (median == a) {
-			return indexA;
+			return 0;
 		} else if (median == b) {
-			return indexB;
+			return numbers.length/2;
 		} else if (median == c) {
-			return indexC;
+			return numbers.length-1;
 		} else {
 			throw new RuntimeException("Incorrect median");
 		}
@@ -212,7 +210,10 @@ public class Sorter {
 	 */
 	public static void quickSortParallel(int [] numbers){
 		if (numbers == null) return;
-		quickSortParallel(numbers,0,numbers.length-1);
+		int pivotPosition = indexOfMedian(numbers);
+		pivotPosition = divide(numbers, 0, numbers.length - 1, pivotPosition);
+		quickSortParallel(numbers, 0, pivotPosition - 1);
+		quickSortParallel(numbers, pivotPosition + 1, numbers.length - 1);
 	}
 
 	/**
@@ -223,10 +224,7 @@ public class Sorter {
 	 */
 	private static void quickSortParallel(int[] numbers, int l, int u) {
 		if (numbers.length > PARALLEL_THRESHOLD) {
-			int pivotPosition = l;
-			if (u - l > 1) {
-				pivotPosition = indexOfMedian(numbers, l, l + ((u - l) / 2), u);
-			}
+			int pivotPosition = l + ((u-l)/2);
 			pivotPosition = divide(numbers, l, u, pivotPosition);
 
 			Thread t1 = new Thread(new ParallelSorter(numbers, l, pivotPosition - 1), "Sorter A");
